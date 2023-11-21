@@ -6,3 +6,4 @@ venv
 .DS_Store
 build-docker-image.sh
 Dockerfile
+README.md
