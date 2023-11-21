@@ -1,0 +1,8 @@
+**/__pycache__
+.vscode
+venv
+.env
+.gitignore
+.DS_Store
+build-docker-image.sh
+Dockerfile
