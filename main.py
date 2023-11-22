@@ -64,6 +64,16 @@ def add_todo():
     except todoist.TodoistError as e:
         return jsonify({"success": False, "error": e.message}), e.status_code
 
+@app.route('/api/v1/projects', methods=["GET"])
+def get_projects():
+    if request.headers.get('Authorization') != app.config.get('AUTH_SECRET'):
+        raise InvalidAPIUsage('Unauthorized', 401)
+        
+    try:
+        return jsonify(app.todo.get_projects())
+    except todoist.TodoistError as e:
+        return jsonify({"success": False, "error": e.message}), e.status_code
+
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5002)
  

@@ -21,22 +21,19 @@ class todoist():
         
         if not self.config.get('TODOIST_PROJECT_ID'):
             raise MissingProjectId()
-
-    def create_task(self, title, note = ""):
-        task = {
-            "content": title,
-            "description": note,
-            "project_id": self.config.get('TODOIST_PROJECT_ID')
-        }
-        body = json.dumps(task)
-
-        headers = {
+        
+    def get_headers(self):
+        return {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.config.get('TODOIST_TOKEN')}",
             "X-Request-Id": str(uuid.uuid4()),
         }
+        
+    def send_post_request(self, path, body_data):
+        body = json.dumps(body_data)
+        headers = self.get_headers()
 
-        req = requests.post(self.config.get('TODOIST_ENDPOINT') + f"/tasks",
+        req = requests.post(self.config.get('TODOIST_ENDPOINT') + path,
                                data=body,
                                headers=headers)
 
@@ -44,3 +41,27 @@ class todoist():
             return req.json()
         except:
             raise TodoistError(req.status_code, req.text)
+        
+    def send_get_request(self, path):
+
+        headers = self.get_headers()
+
+        req = requests.get(self.config.get('TODOIST_ENDPOINT') + path,
+                            headers=headers)
+
+        try:
+            return req.json()
+        except:
+            raise TodoistError(req.status_code, req.text)
+
+    def create_task(self, title, note = ""):
+        task = {
+            "content": title,
+            "description": note,
+            "project_id": self.config.get('TODOIST_PROJECT_ID')
+        }
+        return self.send_post_request("/tasks", task)
+    
+    def get_projects(self):
+        return self.send_get_request("/projects")
+
