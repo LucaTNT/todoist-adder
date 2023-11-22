@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-IMAGE=${IMAGE:-"your-registry.example.com/todoist-adder"}
+IMAGE=${IMAGE:-"your-registry.example.com/your-namespace/todoist-adder"}
 PLATFORMS=${PLATFORMS:-"linux/amd64,linux/arm64"}
 
 tags=""
