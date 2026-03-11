@@ -14,7 +14,7 @@ class TodoistError(Exception):
 class todoist():
     def __init__(self, config):
         self.config = config
-        self.todoist_endpoint = "https://api.todoist.com/rest/v2"
+        self.todoist_endpoint = self.config.get('TODOIST_ENDPOINT')
 
         if not self.config.get('TODOIST_TOKEN'):
             raise MissingAuthToken()
@@ -33,7 +33,8 @@ class todoist():
         body = json.dumps(body_data)
         headers = self.get_headers()
 
-        req = requests.post(self.config.get('TODOIST_ENDPOINT') + path,
+        url = self.todoist_endpoint
+        req = requests.post(url + path,
                                data=body,
                                headers=headers)
 
@@ -46,7 +47,7 @@ class todoist():
 
         headers = self.get_headers()
 
-        req = requests.get(self.config.get('TODOIST_ENDPOINT') + path,
+        req = requests.get(self.todoist_endpoint + path,
                             headers=headers)
 
         try:
