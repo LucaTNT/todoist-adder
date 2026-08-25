@@ -59,8 +59,23 @@ def add_todo():
     except Exception:
         raise InvalidAPIUsage("Invalid JSON provided!")
 
+    attachment = None
+    if data.get('image'):
+        try:
+            attachment = app.todo.upload_attachment(data.get('image'), data.get('image_name'))
+        except todoist.InvalidAttachment as e:
+            raise InvalidAPIUsage(str(e))
+        except todoist.TodoistError as e:
+            return jsonify({"success": False, "error": e.message}), e.status_code
+
     try:
-        return app.todo.create_task(data.get('title'), data.get('note', ''))
+        task = app.todo.create_task(data.get('title'), data.get('note', ''))
+
+        # An upload only becomes visible on the task once a comment carries it.
+        if attachment:
+            app.todo.add_comment(task.get('id'), attachment)
+
+        return task
     except todoist.TodoistError as e:
         return jsonify({"success": False, "error": e.message}), e.status_code
 
