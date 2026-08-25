@@ -10,7 +10,8 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 
 COPY . /app
 
-RUN useradd --system --no-create-home --uid 1001 todoist-adder
+# gunicorn's control server needs a writable HOME, so create one
+RUN useradd --create-home --shell /usr/sbin/nologin --uid 1001 todoist-adder
 USER todoist-adder
 
 EXPOSE 80
