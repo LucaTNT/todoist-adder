@@ -27,3 +27,8 @@ the file name and that comment text:
 
 Note that the task is created before the attachment comment, so if the comment step fails you get
 an error back with the task already saved. Bear that in mind if your client retries automatically.
+
+# Docker
+The image is a plain `python:3.12-slim` running the app under gunicorn on port 80.
+Build and push with `./build-docker-image.sh TAG1 TAG2 ...` (set `IMAGE` to override the registry).
+Remember to pass the environment variables from `config.py` at run time.

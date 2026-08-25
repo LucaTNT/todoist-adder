@@ -7,3 +7,5 @@ venv
 build-docker-image.sh
 Dockerfile
 README.md
+.venv
+test_request.json
