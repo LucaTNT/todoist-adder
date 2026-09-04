@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
+# shellcheck disable=SC1091
+[ -f .env ] && source .env
+
 IMAGE=${IMAGE:-"your-registry.example.com/your-namespace/todoist-adder"}
 PLATFORMS=${PLATFORMS:-"linux/amd64,linux/arm64"}
 
